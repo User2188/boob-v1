@@ -4,6 +4,8 @@ import com.example.boobuser.model.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Map;
+
 @Mapper
 public interface UserMapper {
 
@@ -14,4 +16,5 @@ public interface UserMapper {
     Long findIdByName(@Param("name") String name);
 
     String findPasswordByName(@Param("name") String name);
+
 }

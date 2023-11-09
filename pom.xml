@@ -13,6 +13,9 @@
         <module>boob-gateway</module>
         <module>boob-user</module>
         <module>boob-common</module>
+        <module>boob-posting</module>
+        <module>boob-api</module>
+        <module>boob-jwt</module>
     </modules>
 
     <properties>

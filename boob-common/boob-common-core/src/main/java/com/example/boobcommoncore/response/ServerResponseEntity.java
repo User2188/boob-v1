@@ -48,6 +48,14 @@ public class ServerResponseEntity<T> implements Serializable {
         return serverResponseEntity;
     }
 
+    public static <T> ServerResponseEntity<T> success(T data, String msg) {
+        log.info(msg);
+        ServerResponseEntity<T> serverResponseEntity = new ServerResponseEntity<>();
+        serverResponseEntity.setData(data);
+        serverResponseEntity.setCode(ResponseEnum.OK.value());
+        return serverResponseEntity;
+    }
+
     public static <T> ServerResponseEntity<T> success() {
         ServerResponseEntity<T> serverResponseEntity = new ServerResponseEntity<>();
         serverResponseEntity.setCode(ResponseEnum.OK.value());

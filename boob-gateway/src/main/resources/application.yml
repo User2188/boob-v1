@@ -2,6 +2,8 @@ server:
   port: 8010
 
 spring:
+  profiles:
+    include: jwt
   application:
     name: boob-gateway
   cloud:
@@ -22,3 +24,10 @@ spring:
             - StripPrefix=1
             - PrefixPath=/user
 
+# 解决gateway和web的问题
+  main:
+    web-application-type: reactive
+
+  logging:
+  level:
+    org.springframework.cloud.gateway: trace

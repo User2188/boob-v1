@@ -3,6 +3,7 @@ package com.example.boobuser.service.impl;
 import com.example.boobuser.dto.UserLoginDTO;
 import com.example.boobuser.dto.UserRegisterDTO;
 import com.example.boobuser.mapper.UserMapper;
+import com.example.boobuser.model.User;
 import com.example.boobuser.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,15 +30,16 @@ public class UserServiceImpl implements UserService {
     public Long login(UserLoginDTO param){
         // 检验用户名是否存在
         if (userMapper.findByName(param.getUsername())==null){
-            return 0L;
+            return -1L;
         }
         else{
-            String password = userMapper.findPasswordByName(param.getUsername());
-            if(!password.equals(param.getPassword())){
-                return 1L;
+            User user = userMapper.findByName(param.getUsername());
+            if(!user.getPassword().equals(param.getPassword())){
+                return 0L;
             }
             else{
-                return 2L;
+                Long id = user.getId();
+                return id;
             }
 
         }
