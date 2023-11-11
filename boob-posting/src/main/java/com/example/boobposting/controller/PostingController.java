@@ -5,6 +5,8 @@ import com.example.boobposting.dto.PageGetDTO;
 import com.example.boobposting.dto.PostingPostDTO;
 import com.example.boobposting.model.Posting;
 import com.example.boobposting.service.PostingService;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +15,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
+@RequestMapping("/product")
 public class PostingController {
 
     @Autowired
@@ -52,6 +55,7 @@ public class PostingController {
      * 参数:
      *     postingId
      */
+    @JsonProperty("comments")
     @GetMapping("/posting/all")
     public ServerResponseEntity<?> pageAll(int postingId) {
         log.info(String.valueOf(postingId));
@@ -61,6 +65,23 @@ public class PostingController {
         }
         else{
             return ServerResponseEntity.success(postingAll);
+        }
+    }
+
+    /*
+     * 搜索
+     * 参数:
+     *     postingId
+     */
+    @PostMapping("/posting/search")
+    public ServerResponseEntity<?> search(String query) {
+        log.info(String.valueOf(query));
+        List<Posting> postingList = postingService.serach(query);
+        if(postingList == null){
+            return ServerResponseEntity.showFailMsg("database operation error");
+        }
+        else{
+            return ServerResponseEntity.success(postingList);
         }
     }
 

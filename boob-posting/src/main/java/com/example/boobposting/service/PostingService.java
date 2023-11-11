@@ -4,6 +4,8 @@ import com.example.boobposting.dao.PostingDAO;
 import com.example.boobposting.dto.PageGetDTO;
 import com.example.boobposting.dto.PostingPostDTO;
 import com.example.boobposting.model.Posting;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -61,10 +63,26 @@ public class PostingService {
     /*
      * 获取指定帖子的所有内容
      */
+    @JsonProperty("comments")
     public Posting getPostingWithCommentsAndReplies(int postingId) {
         try{
             Posting posting = postingDAO.findById(postingId); // 无内容，返回空而不是null
             return posting;
+
+        }catch(Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /*
+     * 获取指定帖子的所有内容
+     */
+    public List<Posting> serach(String content) {
+        try{
+            List<Posting> postingList = postingDAO
+                    .findByTitleContainingOrContentContaining(content, content); // 无内容，返回空而不是null
+            return postingList;
 
         }catch(Exception e){
             e.printStackTrace();

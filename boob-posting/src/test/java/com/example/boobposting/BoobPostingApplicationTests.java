@@ -113,8 +113,15 @@ class BoobPostingApplicationTests {
 
     @Test
     public void jpaTestPostingController() throws Exception {
-        Posting posting = postingDAO.findById(2);
-        out.println(posting.toString());
+//        Posting posting = postingDAO.findById(2);
+//        out.println(posting.toString());
+        List<Posting> postingList = postingDAO.findByTitleContainingOrContentContaining("test","test");
+        out.println(postingList == null);
+        out.println(postingList.isEmpty());;
+        for (Posting posting : postingList) {
+            out.println(posting.toString());
+        }
+        out.println("================================================");
 
 //        //测试save
 //        Posting entity = new Posting();
