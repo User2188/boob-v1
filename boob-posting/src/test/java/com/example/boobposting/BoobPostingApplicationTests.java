@@ -1,7 +1,9 @@
 package com.example.boobposting;
 
+import com.example.boobposting.dao.CommentDAO;
 import com.example.boobposting.dao.PostingDAO;
 import com.example.boobposting.dao.ReplyDAO;
+import com.example.boobposting.model.Comment;
 import com.example.boobposting.model.Posting;
 import com.example.boobposting.model.Reply;
 import org.junit.jupiter.api.Test;
@@ -12,7 +14,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import static java.lang.System.*;
 
@@ -25,18 +29,46 @@ class BoobPostingApplicationTests {
     @Autowired
     PostingDAO postingDAO;
 
+    @Autowired
+    CommentDAO commentDAO;
+
     @Test
     void contextLoads() {
     }
 
     @Test
     public void jpaTestReplyController() throws Exception {
+
+        List<Reply> replyList = replyDAO.findByCommentIdOrderByReplyTimeDesc(1);
+        for (Reply reply : replyList) {
+            out.println(reply.toString());
+        }
+
+//        Comment comment = new Comment();
+//        comment.setUserName("无境");
+//        comment.setContent("不错");
+//        comment.setCommentTime(new Date());
+//
+//        Posting posting = postingDAO.findById(2).orElse(null);
+//        if(posting != null){
+//            comment.setPosting(posting);
+//            posting.getCommentList().add(comment);
+//            postingDAO.save(posting);
+//        }
+
 //        Reply entity = new Reply();
 //        entity.setUserName("无境");
 //        entity.setContent("不错");
 ////        entity.setObjId(1);
 //        entity.setReplyTime(new Date());
-//        entity.setReplyLevel(1);
+//
+//        Comment comment = commentDAO.findById(1).orElse(null);
+//        if(comment != null){
+//            entity.setComment(comment);
+//            comment.getReplyList().add(entity);
+//            commentDAO.save(comment);
+//        }
+
 //        replyDAO.save(entity);
 //        List<Reply> replyList = replyDAO.findAll();
 //        for (Reply reply : replyList) {
@@ -81,6 +113,8 @@ class BoobPostingApplicationTests {
 
     @Test
     public void jpaTestPostingController() throws Exception {
+        Posting posting = postingDAO.findById(2);
+        out.println(posting.toString());
 
 //        //测试save
 //        Posting entity = new Posting();
@@ -108,11 +142,16 @@ class BoobPostingApplicationTests {
 //            postingDAO.save(entity);
 //        }
 
+//        int page=0,size=5;
+//        Pageable pageable = PageRequest.of(page, size, Sort.by("createTime").descending());
+//        Page<Posting> postingPage = postingDAO.findAll(pageable);
+//        out.println(postingPage == null);
+
         // 测试分页
-        int page=1,size=5;
-        Pageable pageable = PageRequest.of(page, size, Sort.by("createTime").descending());
-        Page<Posting> postingPage = postingDAO.findByUserName("111", pageable);
-        out.println(postingPage == null);
+//        int page=1,size=5;
+//        Pageable pageable = PageRequest.of(page, size, Sort.by("createTime").descending());
+//        Page<Posting> postingPage = postingDAO.findByUserName("111", pageable);
+//        out.println(postingPage == null);
 //        out.println(postingPage.getContent().isEmpty());
 //        for (Posting posting : postingPage.getContent()) {
 //            out.println(posting.toString());

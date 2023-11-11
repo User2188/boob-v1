@@ -10,8 +10,8 @@ import java.util.Date;
 @Getter
 @Setter
 public class PostingPostDTO {
-    private int userid;
-    private String username;
+    private int userId;
+    private String userName;
     private String title;
     private String content;
     private Date time;

@@ -49,7 +49,7 @@ public class JwtCheckFilter {
             ServerHttpRequest.Builder mutate = serverHttpRequest.mutate();
             String requestUrl = serverHttpRequest.getURI().getPath();
 
-//            log.info("requestUrl:{}", requestUrl);
+            log.info("requestUrl:{}", requestUrl);
 
             // 跳过对登录请求的 token 检查。因为登录请求是没有 token 的，是来申请 token 的。
             if(LOGIN_URL.equals(requestUrl) || REGISTER_URL.equals(requestUrl)) {

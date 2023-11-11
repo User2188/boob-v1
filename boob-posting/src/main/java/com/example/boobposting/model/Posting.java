@@ -1,40 +1,40 @@
 package com.example.boobposting.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
 @Setter
-public class Posting {
+public class Posting implements Serializable {
     @Id
     @GeneratedValue
     private int id;
 
+    @OneToMany(mappedBy = "posting", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OrderBy("commentTime DESC")
+    private List<Comment> comments;
+
     @Column
     private String userName;
-
     @Column
     private String title;
-
     @Column
     private String content;
-
     @Column
     private Date createTime;
 
     @Column(columnDefinition = "int default 0")
     private int replyNum;
-
     @Column(columnDefinition = "int default 0")
     private int blockId;
-
     @Column(columnDefinition = "character varying(100) default ''")
     private String tags;
 
@@ -43,6 +43,7 @@ public class Posting {
         return "Posting{" +
                 "id=" + id +
                 ", userName='" + userName + '\'' +
+                ",comments=" + comments.toString() +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
                 ", createTime=" + createTime +

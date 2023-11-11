@@ -9,8 +9,6 @@ import java.util.List;
 
 public interface ReplyDAO extends JpaRepository<Reply, Integer> {
 
-    public List<Reply> findByObjIdAndReplyLevel(int objId, int replyLevel);
-
-    public Page<Reply> findByObjIdAndReplyLevel(int objId, int replyLevel, Pageable pageable);
+    public List<Reply> findByCommentIdOrderByReplyTimeDesc(int CommentId);
 
 }

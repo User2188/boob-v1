@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ReplyGetDTO {
-    private int objId;
-    private int replyLevel;
+public class PageGetDTO {
+    private int page;
+    private int size;
 }

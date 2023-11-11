@@ -22,7 +22,14 @@ spring:
             - Path=/gateway-user/**
           filters:
             - StripPrefix=1
-            - PrefixPath=/user
+
+        - id: boob-posting
+          uri: lb://boob-posting
+          predicates:
+            - Path=/gateway-posting/**
+          filters:
+            - StripPrefix=1
+
 
 # 解决gateway和web的问题
   main:

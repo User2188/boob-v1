@@ -1,16 +1,11 @@
 package com.example.boobposting.controller;
 
 import com.example.boobcommoncore.response.ServerResponseEntity;
-import com.example.boobposting.dao.ReplyDAO;
-import com.example.boobposting.dto.PostingPostDTO;
-import com.example.boobposting.dto.ReplyGetDTO;
-import com.example.boobposting.dto.ReplyGetPageDTO;
 import com.example.boobposting.dto.ReplyPostDTO;
-import com.example.boobposting.model.Posting;
 import com.example.boobposting.model.Reply;
 import com.example.boobposting.service.ReplyService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,21 +28,15 @@ public class ReplyController {
         }
     }
 
-    @PostMapping("/reply/get")
-    public ServerResponseEntity<?> get(ReplyGetDTO replyGetDTO) {
-        List<Reply> replyList = replyService.getReplyOrderByReplyTimeDesc(replyGetDTO);
+    /*
+     * 获取指定评论的的所有回复
+     * 参数:
+     *     commentId
+     */
+    @GetMapping("/reply/get")
+    public ServerResponseEntity<?> get(int commentId) {
+        List<Reply> replyList = replyService.getRepliesByCommentId(commentId);
         if(replyList == null) {
-            return ServerResponseEntity.showFailMsg("database operation error");
-        }
-        else{
-            return ServerResponseEntity.success(replyList);
-        }
-    }
-
-    @PostMapping("/reply/page")
-    public ServerResponseEntity<?> page(ReplyGetPageDTO replyGetPageDTO) {
-        List<Reply> replyList = replyService.getReplyPageOrderByReplyTimeDesc(replyGetPageDTO);
-        if(replyList == null){
             return ServerResponseEntity.showFailMsg("database operation error");
         }
         else{
