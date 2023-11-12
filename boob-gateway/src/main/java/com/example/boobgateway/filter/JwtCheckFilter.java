@@ -52,7 +52,8 @@ public class JwtCheckFilter {
             log.info("requestUrl:{}", requestUrl);
 
             // 跳过对登录请求的 token 检查。因为登录请求是没有 token 的，是来申请 token 的。
-            if(LOGIN_URL.equals(requestUrl) || REGISTER_URL.equals(requestUrl)) {
+            if(LOGIN_URL.equals(requestUrl) || REGISTER_URL.equals(requestUrl) ||
+                    LOGIN_URL.equals(requestUrl+"/test") || REGISTER_URL.equals(requestUrl+"/test")) {
 //                log.info("跳过对登录请求的 token 检查");
                 return chain.filter(exchange);
             }
@@ -118,6 +119,7 @@ public class JwtCheckFilter {
      */
     private String getToken(ServerHttpRequest request) {
         String token = request.getHeaders().getFirst(jwtProperties.getHeader());
+        log.info("token: {}", token);
         // 如果前端设置了令牌前缀，则裁剪掉前缀
         if (StringUtils.isNotEmpty(token) && token.startsWith("Bearer "))
         {

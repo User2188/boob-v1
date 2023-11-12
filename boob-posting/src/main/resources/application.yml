@@ -3,6 +3,8 @@ server:
 spring:
   application:
     name: boob-posting
+  profiles:
+    include: jwt
   cloud:
     nacos:
       discovery:

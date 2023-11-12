@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Slf4j
+//@Slf4j
 @Service
 public class PostingService {
 
@@ -44,12 +44,12 @@ public class PostingService {
     public List<Posting> getPostPageOrderByCreateTimeDesc(PageGetDTO postingGetDTO) {
         int page = postingGetDTO.getPage();
         int size = postingGetDTO.getSize();
-        log.info("page: " + page + ", size: " + size);
+//        log.info("page: " + page + ", size: " + size);
 
         try{
             Pageable pageable = PageRequest.of(page, size, Sort.by("createTime").descending());
             Page<Posting> postingPage = postingDAO.findAll(pageable); // 无内容，返回空而不是null
-            log.info("come in");
+//            log.info("come in");
 
             return postingPage.getContent();
 

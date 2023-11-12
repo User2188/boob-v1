@@ -3,20 +3,12 @@ package com.example.boobposting;
 import com.example.boobposting.dao.CommentDAO;
 import com.example.boobposting.dao.PostingDAO;
 import com.example.boobposting.dao.ReplyDAO;
-import com.example.boobposting.model.Comment;
-import com.example.boobposting.model.Posting;
 import com.example.boobposting.model.Reply;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import static java.lang.System.*;
 
@@ -113,15 +105,20 @@ class BoobPostingApplicationTests {
 
     @Test
     public void jpaTestPostingController() throws Exception {
+
+        String name = postingDAO.findUserNameById(153);
+        out.println(name);
+
 //        Posting posting = postingDAO.findById(2);
 //        out.println(posting.toString());
-        List<Posting> postingList = postingDAO.findByTitleContainingOrContentContaining("test","test");
-        out.println(postingList == null);
-        out.println(postingList.isEmpty());;
-        for (Posting posting : postingList) {
-            out.println(posting.toString());
-        }
-        out.println("================================================");
+
+//        List<Posting> postingList = postingDAO.findByTitleContainingOrContentContaining("test","test");
+//        out.println(postingList == null);
+//        out.println(postingList.isEmpty());;
+//        for (Posting posting : postingList) {
+//            out.println(posting.toString());
+//        }
+//        out.println("================================================");
 
 //        //测试save
 //        Posting entity = new Posting();

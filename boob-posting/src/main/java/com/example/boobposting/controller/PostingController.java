@@ -8,12 +8,13 @@ import com.example.boobposting.service.PostingService;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Slf4j
+//@Slf4j
 @RestController
 @RequestMapping("/product")
 public class PostingController {
@@ -58,7 +59,7 @@ public class PostingController {
     @JsonProperty("comments")
     @GetMapping("/posting/all")
     public ServerResponseEntity<?> pageAll(int postingId) {
-        log.info(String.valueOf(postingId));
+//        log.info(String.valueOf(postingId));
         Posting postingAll = postingService.getPostingWithCommentsAndReplies(postingId);
         if(postingAll == null){
             return ServerResponseEntity.showFailMsg("database operation error");
@@ -74,9 +75,10 @@ public class PostingController {
      *     postingId
      */
     @PostMapping("/posting/search")
-    public ServerResponseEntity<?> search(String query) {
-        log.info(String.valueOf(query));
+    public ServerResponseEntity<?> search(@RequestParam("query") String query) {
+//        log.info("query:" + String.valueOf(query));
         List<Posting> postingList = postingService.serach(query);
+//        log.info("postingList size:" + postingList.size());
         if(postingList == null){
             return ServerResponseEntity.showFailMsg("database operation error");
         }

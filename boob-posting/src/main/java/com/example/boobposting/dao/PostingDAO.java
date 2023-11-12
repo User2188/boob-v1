@@ -1,15 +1,12 @@
 package com.example.boobposting.dao;
 
 import com.example.boobposting.model.Posting;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -26,5 +23,8 @@ public interface PostingDAO extends JpaRepository<Posting, Integer> {
 
 
     public List<Posting> findByTitleContainingOrContentContaining(String query1, String query2);
+
+    @Query("SELECT p.userName FROM Posting p WHERE p.id = ?1")
+    public String findUserNameById(int id);
 
 }

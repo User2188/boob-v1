@@ -11,6 +11,22 @@ spring:
       discovery:
         server-addr: 127.0.0.1:8848
     gateway:
+      globalcors:
+        add-to-simple-url-handler-mapping: true # 解决options请求被拦截问题
+        cors-configurations:
+          '[/**]': # 拦截所有请求
+            allowedOriginPatterns:
+              - "*"
+            allowedHeaders: # 允许在请求中携带的头信息
+              - "*"
+            allowCredentials: true # 是否允许携带cookie
+            allowedMethods: # 允许的跨域ajax的请求方式
+              - "GET"
+              - "POST"
+              - "DELETE"
+              - "PUT"
+              - "OPTIONS"
+            maxAge: 360000 # 这次跨域检测的有效期
       discovery:
         locator:
           enabled: false
