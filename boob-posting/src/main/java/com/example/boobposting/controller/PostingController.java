@@ -7,14 +7,18 @@ import com.example.boobposting.model.Posting;
 import com.example.boobposting.service.PostingService;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.websocket.server.PathParam;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
-//@Slf4j
+@Slf4j
 @RestController
 @RequestMapping("/product")
 public class PostingController {
@@ -22,9 +26,23 @@ public class PostingController {
     @Autowired
     private PostingService postingService;
 
+    @PostMapping("/posting/post/test")
+    public ServerResponseEntity<String> post(PostingPostDTO postingPostDTO) {
+        String message = postingService.post(postingPostDTO);
+        if(message.equals("post success")){
+            return ServerResponseEntity.success("Post Success");
+        }
+        else{
+            return ServerResponseEntity.showFailMsg(message);
+        }
+    }
 
     @PostMapping("/posting/post")
-    public ServerResponseEntity<String> post(PostingPostDTO postingPostDTO) {
+    public ServerResponseEntity<String> post(@RequestBody String payload ) throws IOException {
+        log.info("payload: " + payload);
+        ObjectMapper objectMapper = new ObjectMapper();
+        PostingPostDTO postingPostDTO = objectMapper.readValue(payload, PostingPostDTO.class);
+
         String message = postingService.post(postingPostDTO);
         if(message.equals("post success")){
             return ServerResponseEntity.success("Post Success");
@@ -75,10 +93,23 @@ public class PostingController {
      *     postingId
      */
     @PostMapping("/posting/search")
-    public ServerResponseEntity<?> search(@RequestParam("query") String query) {
-//        log.info("query:" + String.valueOf(query));
+    public ServerResponseEntity<?> search(@RequestBody Map<String,String> param) {
+        String query = param.get("query");
+        log.info("query:" + String.valueOf(query));
         List<Posting> postingList = postingService.serach(query);
-//        log.info("postingList size:" + postingList.size());
+        log.info("postingList size:" + postingList.size());
+        if(postingList == null){
+            return ServerResponseEntity.showFailMsg("database operation error");
+        }
+        else{
+            return ServerResponseEntity.success(postingList);
+        }
+    }
+
+    @PostMapping("/posting/search/test")
+    public ServerResponseEntity<?> search(String query) {
+        List<Posting> postingList = postingService.serach(query);
+        log.info("postingList size:" + postingList.size());
         if(postingList == null){
             return ServerResponseEntity.showFailMsg("database operation error");
         }

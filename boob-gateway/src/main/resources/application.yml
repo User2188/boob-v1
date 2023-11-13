@@ -46,6 +46,10 @@ spring:
           filters:
             - StripPrefix=1
             - PrefixPath=/product
+        - id: boob-message
+          uri: lb:ws://boob-message
+          predicates:
+            - Path=/websocket/**
 
 # 解决gateway和web的问题
   main:

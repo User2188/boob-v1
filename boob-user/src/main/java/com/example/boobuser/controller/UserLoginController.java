@@ -51,6 +51,9 @@ public class UserLoginController {
         else { // 返回id,即type = id
             Map<String, Object> tokenMap = jwtTokenUtil
                     .generateTokenAndRefreshToken(String.valueOf(type),param.getUsername());
+            tokenMap.put("userId",type);
+            log.info(tokenMap.get("access_token").toString());
+            log.info(tokenMap.get("userId").toString());
             return ServerResponseEntity.success(tokenMap, param.getUsername() + " login success.");
         }
     }
@@ -74,6 +77,8 @@ public class UserLoginController {
             Map<String, Object> tokenMap = jwtTokenUtil
                     .generateTokenAndRefreshToken(String.valueOf(type),param.getUsername());
             tokenMap.put("userId",type);
+            log.info(tokenMap.get("access_token").toString());
+            log.info(tokenMap.get("userId").toString());
             return ServerResponseEntity.success(tokenMap, param.getUsername() + " login success.");
         }
     }
