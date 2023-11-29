@@ -1,5 +1,6 @@
 package com.example.boobmessage.Service;
 
+import com.example.boobapimessage.dto.CommentOrReplyDTO;
 import jakarta.websocket.OnClose;
 import jakarta.websocket.OnMessage;
 import jakarta.websocket.OnOpen;
@@ -57,15 +58,20 @@ public class WebSocket {
     }
 
     // 此为单点消息-单用户通知
-    public void sendOneMessage(String userName, String message) {
+    public String sendOneMessage(String userName, String message) {
         System.out.println("【websocket消息】单点消息:"+message+" \n给用户:"+userName);
         Session session = sessionPool.get(userName);
         if (session != null) {
             try {
                 session.getAsyncRemote().sendText(message);
+                return "success";
             } catch (Exception e) {
                 e.printStackTrace();
+                return e.getMessage();
             }
+        }
+        else{
+            return "not online";
         }
     }
 

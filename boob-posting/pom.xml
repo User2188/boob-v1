@@ -94,7 +94,6 @@
                 <version>${spring-boot.version}</version>
                 <configuration>
                     <mainClass>com.example.boobposting.BoobPostingApplication</mainClass>
-                    <skip>true</skip>
                 </configuration>
                 <executions>
                     <execution>
@@ -104,6 +103,30 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>1.0.0</version>
+                <configuration>
+                    <!--指定生成的镜像名-->
+                    <imageName>${project.artifactId}:${project.version}</imageName>
+                    <!-- 基础镜像jdk17-->
+                    <baseImage>openjdk:17</baseImage>
+                    <entryPoint>["java", "-jar", "/${project.build.finalName}.jar"]</entryPoint>
+                    <dockerHost>${docker.registry.host}</dockerHost>
+                    <forceTags>true</forceTags>
+                    <exposes>8078</exposes>
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <!--用于指定需要复制的根目录，${project.build.directory}表示target目 录-->
+                            <directory>${project.build.directory}</directory>
+                            <!--用于指定需要复制的文件。${project.build.finalName}.jar指的是打包 后的jar包文件。-->
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources>
+                </configuration>
             </plugin>
         </plugins>
     </build>

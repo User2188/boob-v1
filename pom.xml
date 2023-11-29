@@ -17,6 +17,8 @@
         <module>boob-jwt</module>
         <module>boob-message</module>
         <module>boob-api</module>
+        <module>boob-api/boob-api-message</module>
+        <module>boob-common/boob-common-core</module>
     </modules>
 
     <properties>
@@ -26,6 +28,10 @@
         <spring-boot.version>3.0.2</spring-boot.version>
         <spring.cloud.version>2022.0.0</spring.cloud.version>
         <spring.cloud.alibaba.version>2022.0.0.0</spring.cloud.alibaba.version>
+
+        <docker.registry.url>124.70.61.254</docker.registry.url>
+        <docker.registry.host>http://${docker.registry.url}:2375</docker.registry.host>
+        <docker.plugin.version>1.2.0</docker.plugin.version>
     </properties>
 
     <dependencies>
@@ -129,7 +135,6 @@
                 <version>${spring-boot.version}</version>
                 <configuration>
                     <mainClass>com.example.boobv1.BoobV1Application</mainClass>
-                    <skip>true</skip>
                 </configuration>
                 <executions>
                     <execution>
@@ -139,6 +144,29 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>1.0.0</version>
+                <configuration>
+                    <!--指定生成的镜像名-->
+                    <imageName>${project.artifactId}:${project.version}</imageName>
+                    <!-- 基础镜像jdk17-->
+                    <baseImage>openjdk:17</baseImage>
+                    <entryPoint>["java", "-jar", "/${project.build.finalName}.jar"]</entryPoint>
+                    <dockerHost>${docker.registry.host}</dockerHost>
+                    <forceTags>true</forceTags>
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <!--用于指定需要复制的根目录，${project.build.directory}表示target目 录-->
+                            <directory>${project.build.directory}</directory>
+                            <!--用于指定需要复制的文件。${project.build.finalName}.jar指的是打包 后的jar包文件。-->
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources>
+                </configuration>
             </plugin>
         </plugins>
     </build>

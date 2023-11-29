@@ -30,8 +30,25 @@ public class MessageController {
 //        log.info(commentOrReplyDTO == null ? "null" : commentOrReplyDTO.toString());
 //        log.info(commentOrReplyDTO.getContent());
         try{
-            webSocket.sendOneMessage(commentOrReplyDTO.getUserName2(),commentOrReplyDTO.toString());
-            return "success";
+
+            ObjectMapper mapper = new ObjectMapper();
+            // java对象转换为json字符换
+            String Json =  mapper.writeValueAsString(commentOrReplyDTO);
+
+            String out = webSocket.sendOneMessage(commentOrReplyDTO.getUserName2(),Json);
+            if(out.equals("not online")){ //用户不在线
+
+                // 存数据库
+                // ...
+
+                return out;
+            }
+            else if(out.equals("success")){
+                return out;
+            }
+            else{ // 尝试发送失败
+                return out;
+            }
         }
         catch (Exception e){
             e.printStackTrace();
