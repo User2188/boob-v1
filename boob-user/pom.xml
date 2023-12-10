@@ -19,7 +19,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <spring-boot.version>3.0.2</spring-boot.version>
 
-        <docker.registry.url>124.70.61.254</docker.registry.url>
+        <docker.registry.url>123.249.39.131</docker.registry.url>
         <docker.registry.host>http://${docker.registry.url}:2375</docker.registry.host>
         <docker.plugin.version>1.2.0</docker.plugin.version>
     </properties>

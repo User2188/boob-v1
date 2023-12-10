@@ -6,10 +6,10 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 124.70.61.254:8848
+        server-addr: 123.249.39.131:8848
   datasource:
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://124.70.61.254:5432/boob_user
+    url: jdbc:postgresql://123.249.39.131:5432/boob_user
     username: postgres
     password: 123456
 mybatis.configuration.mapUnderscoreToCamelCase: true
