@@ -8,7 +8,7 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 123.249.39.131
+        server-addr: 127.0.0.1
   jpa:
     hibernate:
       ddl-auto: update
@@ -16,6 +16,6 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
   datasource:
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://123.249.39.131:5432/boob_posting
+    url: jdbc:postgresql://127.0.0.1:5432/boob_posting
     username: postgres
     password: 123456

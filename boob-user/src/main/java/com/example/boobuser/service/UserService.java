@@ -11,4 +11,6 @@ public interface UserService {
 
     Long login(UserLoginDTO param);
 
+    int permission(UserLoginDTO param);
+
 }

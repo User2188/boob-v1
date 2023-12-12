@@ -89,4 +89,9 @@ public class PostingService {
             return null;
         }
     }
+
+    public Boolean deletePosting(int postingID){
+        postingDAO.deleteById(postingID);
+        return true;
+    }
 }

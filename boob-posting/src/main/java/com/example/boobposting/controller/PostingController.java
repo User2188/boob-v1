@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Slf4j
 @RestController
@@ -28,6 +29,7 @@ public class PostingController {
 
     @PostMapping("/posting/post/test")
     public ServerResponseEntity<String> post(PostingPostDTO postingPostDTO) {
+        log.info("postingPostDTO : " + postingPostDTO);
         String message = postingService.post(postingPostDTO);
         if(message.equals("post success")){
             return ServerResponseEntity.success("Post Success");
@@ -49,6 +51,22 @@ public class PostingController {
         }
         else{
             return ServerResponseEntity.showFailMsg(message);
+        }
+    }
+
+    @PostMapping("/posting/delete")
+    public ServerResponseEntity<String> deletePosting(int postingId,@RequestHeader("permissionNum") int pernum,@RequestHeader("username") String username){
+        log.info("payload: " + postingId+","+pernum+","+username);
+        var posting=postingService.getPostingWithCommentsAndReplies(postingId);
+        int userPermission= (int) (pernum/Math.pow(2,2));
+        System.out.println(userPermission);
+        System.out.println(posting.getUserName());
+        if (Objects.equals(username, posting.getUserName()) ||userPermission>0){
+            postingService.deletePosting(postingId);
+            return ServerResponseEntity.success("Delete Success");
+        }
+        else{
+            return ServerResponseEntity.showFailMsg("No Permission");
         }
     }
 

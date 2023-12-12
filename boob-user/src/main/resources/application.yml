@@ -6,10 +6,15 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 123.249.39.131:8848
+        server-addr: 127.0.0.1:8848
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
   datasource:
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://123.249.39.131:5432/boob_user
+    url: jdbc:postgresql://127.0.0.1:5432/boob_user
     username: postgres
     password: 123456
 mybatis.configuration.mapUnderscoreToCamelCase: true

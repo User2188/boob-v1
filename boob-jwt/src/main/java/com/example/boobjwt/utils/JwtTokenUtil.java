@@ -17,6 +17,8 @@ public class JwtTokenUtil {
     private static final String JWT_CACHE_KEY = "jwt:userId:";
     private static final String USER_ID = "userId";
     private static final String USER_NAME = "username";
+
+    private static final String USER_PERMISSION = "permissionNum";
     private static final String ACCESS_TOKEN = "access_token";
     private static final String REFRESH_TOKEN = "refresh_token";
     private static final String EXPIRE_IN = "expire_in";
@@ -40,6 +42,11 @@ public class JwtTokenUtil {
         return tokenMap;
     }
 
+    public Map<String, Object> generateTokenAndRefreshToken(String userId, String username,int pernum) {
+        Map<String, Object> tokenMap = buildToken(userId, username,pernum);
+//        cacheToken(userId, tokenMap);
+        return tokenMap;
+    }
 //    private void cacheToken(String userId, Map<String, Object> tokenMap) {
 //        stringRedisTemplate.opsForHash().put(JWT_CACHE_KEY + userId, ACCESS_TOKEN, tokenMap.get(ACCESS_TOKEN));
 //        stringRedisTemplate.opsForHash().put(JWT_CACHE_KEY + userId, REFRESH_TOKEN, tokenMap.get(REFRESH_TOKEN));
@@ -56,6 +63,15 @@ public class JwtTokenUtil {
         return tokenMap;
     }
 
+    private Map<String, Object> buildToken(String userId, String username,int pernum) {
+        String accessToken = generateToken(userId, username, pernum,null);
+        String refreshToken = generateRefreshToken(userId, username, pernum,null);
+        HashMap<String, Object> tokenMap = new HashMap<>(2);
+        tokenMap.put(ACCESS_TOKEN, accessToken);
+        tokenMap.put(REFRESH_TOKEN, refreshToken);
+        tokenMap.put(EXPIRE_IN, jwtProperties.getExpiration());
+        return tokenMap;
+    }
 
     public Map<String, Object> refreshTokenAndGenerateToken(String userId, String username) {
         Map<String, Object> tokenMap = buildToken(userId, username);
@@ -75,7 +91,13 @@ public class JwtTokenUtil {
 
     public String generateToken(String userId, String username,
                                 Map<String,String> payloads) {
-        Map<String, Object> claims = buildClaims(userId, username, payloads);;
+        Map<String, Object> claims = buildClaims(userId, username, payloads);
+
+        return generateToken(claims);
+    }
+
+    public String generateToken(String userId, String username,Integer pernum, Map<String,String> payloads) {
+        Map<String, Object> claims = buildClaims(userId, username,pernum, payloads);;
 
         return generateToken(claims);
     }
@@ -95,6 +117,22 @@ public class JwtTokenUtil {
         return claims;
     }
 
+    private Map<String, Object> buildClaims(String userId, String username,int pernum, Map<String, String> payloads) {
+        int payloadSizes = payloads == null? 0 : payloads.size();
+
+        Map<String, Object> claims = new HashMap<>(payloadSizes + 2);
+        claims.put("sub", userId);
+        claims.put("username", username);
+        claims.put("permissionNum", pernum);
+        claims.put("created", new Date());
+
+        if(payloadSizes > 0){
+            claims.putAll(payloads);
+        }
+
+        return claims;
+    }
+
     /**
      * 生成 token 令牌
      *
@@ -103,6 +141,12 @@ public class JwtTokenUtil {
      * @return 令牌
      */
     public String generateRefreshToken(String userId, String username, Map<String,String> payloads) {
+        Map<String, Object> claims = buildClaims(userId, username, payloads);
+
+        return generateRefreshToken(claims);
+    }
+
+    public String generateRefreshToken(String userId, String username,int pernum, Map<String,String> payloads) {
         Map<String, Object> claims = buildClaims(userId, username, payloads);
 
         return generateRefreshToken(claims);
@@ -134,6 +178,17 @@ public class JwtTokenUtil {
             username = null;
         }
         return username;
+    }
+
+    public Integer getUserPermissionFromToken(String token) {
+        Integer pernum;
+        try {
+            Claims claims = getClaimsFromToken(token);
+            pernum = (Integer) claims.get(USER_PERMISSION);
+        } catch (Exception e) {
+            pernum = 0;
+        }
+        return pernum;
     }
 
     /**

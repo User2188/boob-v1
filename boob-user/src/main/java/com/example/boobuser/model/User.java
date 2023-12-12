@@ -13,4 +13,5 @@ public class User {
     private String password;
     private Date create;
     private int pic;
+    private int roleid;
 }
