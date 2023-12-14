@@ -56,6 +56,9 @@ public class CommentService {
                 if(out.equals("success")){
                     return "comment success and message sent success";
                 }
+                else if(out.equals("not online")){
+                    return "comment success and message is stored";
+                }
                 else{
                     return "comment success but message sent failed";
                 }
