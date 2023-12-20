@@ -42,8 +42,8 @@ public class JwtTokenUtil {
         return tokenMap;
     }
 
-    public Map<String, Object> generateTokenAndRefreshToken(String userId, String username,int pernum) {
-        Map<String, Object> tokenMap = buildToken(userId, username,pernum);
+    public Map<String, Object> generateTokenAndRefreshToken(String userId, String username, int pernum) {
+        Map<String, Object> tokenMap = buildToken(userId, username, pernum);
 //        cacheToken(userId, tokenMap);
         return tokenMap;
     }
@@ -96,7 +96,7 @@ public class JwtTokenUtil {
         return generateToken(claims);
     }
 
-    public String generateToken(String userId, String username,Integer pernum, Map<String,String> payloads) {
+    public String generateToken(String userId, String username,int pernum, Map<String,String> payloads) {
         Map<String, Object> claims = buildClaims(userId, username,pernum, payloads);;
 
         return generateToken(claims);
@@ -147,7 +147,7 @@ public class JwtTokenUtil {
     }
 
     public String generateRefreshToken(String userId, String username,int pernum, Map<String,String> payloads) {
-        Map<String, Object> claims = buildClaims(userId, username, payloads);
+        Map<String, Object> claims = buildClaims(userId, username, pernum, payloads);
 
         return generateRefreshToken(claims);
     }

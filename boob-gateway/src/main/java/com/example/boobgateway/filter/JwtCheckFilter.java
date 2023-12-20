@@ -75,7 +75,7 @@ public class JwtCheckFilter {
             String userId = jwtTokenUtil.getUserIdFromToken(token);
             String username = jwtTokenUtil.getUserNameFromToken(token);
             Integer pernum= jwtTokenUtil.getUserPermissionFromToken(token);
-            if (StringUtils.isEmpty(userId)) {
+            if (StringUtils.isEmpty(userId)||StringUtils.isEmpty(username)||pernum==null) {
                 return unauthorizedResponse(exchange, serverHttpResponse, ResponseCodeEnum.TOKEN_CHECK_INFO_FAILED);
             }
 
@@ -83,6 +83,7 @@ public class JwtCheckFilter {
             addHeader(mutate, USER_ID, userId);
             addHeader(mutate, USER_NAME, username);
             addHeader(mutate, USER_PERMISSION, pernum);
+
             // 内部请求来源参数清除
             removeHeader(mutate, FROM_SOURCE);
             return chain.filter(exchange.mutate().request(mutate.build()).build());
@@ -122,8 +123,10 @@ public class JwtCheckFilter {
      * 获取请求token
      */
     private String getToken(ServerHttpRequest request) {
-        String token = request.getHeaders().getFirst("token");
+//        String token = request.getHeaders().getFirst("token");
+        String token = request.getHeaders().getFirst(jwtProperties.getHeader());
         log.info("token: {}", token);
+
         // 如果前端设置了令牌前缀，则裁剪掉前缀
         if (StringUtils.isNotEmpty(token) && token.startsWith("Bearer "))
         {

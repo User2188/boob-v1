@@ -47,9 +47,9 @@ spring:
             - StripPrefix=1
             - PrefixPath=/product
         - id: boob-message
-          uri: lb:ws://boob-message
+          uri: lb://boob-message
           predicates:
-            - Path=/websocket/**
+            - Path=/websocket/**, /message-get/**
 
 # 解决gateway和web的问题
   main:

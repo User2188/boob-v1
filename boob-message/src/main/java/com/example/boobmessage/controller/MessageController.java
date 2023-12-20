@@ -41,7 +41,7 @@ public class MessageController {
 
             String out = webSocket.sendOneMessage(commentOrReplyDTO.getUserName2(),Json);
             if(out.equals("not online")){ //用户不在线
-
+                log.info("用户"+commentOrReplyDTO.getUserName2()+"不在线");
                 Message message = new Message();
                 message.setUserName1(commentOrReplyDTO.getUserName1());
                 message.setUserName2(commentOrReplyDTO.getUserName2());
@@ -81,8 +81,8 @@ public class MessageController {
         }
         else{
             // 读完删除
-            String deleteOut = messageService.deleteMessagesByUserName2(userName2);
-            log.info(deleteOut);
+//            String deleteOut = messageService.deleteMessagesByUserName2(userName2);
+//            log.info(deleteOut);
             return ServerResponseEntity.success(messageList);
         }
     }

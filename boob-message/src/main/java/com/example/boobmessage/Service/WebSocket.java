@@ -7,12 +7,14 @@ import jakarta.websocket.OnOpen;
 import jakarta.websocket.Session;
 import jakarta.websocket.server.PathParam;
 import jakarta.websocket.server.ServerEndpoint;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArraySet;
 
+@Slf4j
 @Component
 @ServerEndpoint("/websocket/{userName}")
 public class WebSocket {
@@ -34,10 +36,12 @@ public class WebSocket {
     public void onClose() {
         try {
             webSockets.remove(this);
+            sessionPool.remove(session.getPathParameters().get("userName"));
         } catch (Exception e) {
             e.printStackTrace();
         }
         System.out.println("【websocket消息】连接断开，总数为:"+webSockets.size());
+        System.out.println("【sessionPool】总数为:"+sessionPool.size());
     }
 
     @OnMessage

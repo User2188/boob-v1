@@ -13,4 +13,6 @@ public interface UserService {
 
     int permission(UserLoginDTO param);
 
+    int roleid(UserLoginDTO param);
+
 }

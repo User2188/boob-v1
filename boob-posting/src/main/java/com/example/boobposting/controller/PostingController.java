@@ -1,6 +1,7 @@
 package com.example.boobposting.controller;
 
 import com.example.boobcommoncore.response.ServerResponseEntity;
+import com.example.boobposting.dto.DeleteDTO;
 import com.example.boobposting.dto.PageGetDTO;
 import com.example.boobposting.dto.PostingPostDTO;
 import com.example.boobposting.model.Posting;
@@ -55,8 +56,17 @@ public class PostingController {
     }
 
     @PostMapping("/posting/delete")
-    public ServerResponseEntity<String> deletePosting(int postingId,@RequestHeader("permissionNum") int pernum,@RequestHeader("username") String username){
+    public ServerResponseEntity<String> deletePosting(
+            @RequestBody String payload,
+            @RequestHeader("permissionNum") int pernum,
+            @RequestHeader("username") String username
+    ) throws IOException {
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        DeleteDTO deleteDTO = objectMapper.readValue(payload, DeleteDTO.class);
+        int postingId = deleteDTO.getPostingId();
         log.info("payload: " + postingId+","+pernum+","+username);
+
         var posting=postingService.getPostingWithCommentsAndReplies(postingId);
         int userPermission= (int) (pernum/Math.pow(2,2));
         System.out.println(userPermission);

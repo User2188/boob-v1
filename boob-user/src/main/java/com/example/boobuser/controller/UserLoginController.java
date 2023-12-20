@@ -42,7 +42,7 @@ public class UserLoginController {
     public ServerResponseEntity<?> login_test(UserLoginDTO param)  {
 
         Long type = userService.login(param);
-        int pernum=userService.permission(param);
+        int pernum = userService.permission(param);
         if (type.equals(-1L)){
             return ServerResponseEntity.showFailMsg("user not exits." + param.getUsername() + param.getPassword());
         }
@@ -68,7 +68,8 @@ public class UserLoginController {
         UserLoginDTO param = objectMapper.readValue(payload, UserLoginDTO.class);
 
         Long type = userService.login(param);
-        int pernum=userService.permission(param);
+        int pernum = userService.permission(param);
+        int roleid = userService.roleid(param);
         if (type.equals(-1L)){
             return ServerResponseEntity.showFailMsg("user not exits." + param.getUsername() + param.getPassword());
         }
@@ -79,8 +80,10 @@ public class UserLoginController {
             Map<String, Object> tokenMap = jwtTokenUtil
                     .generateTokenAndRefreshToken(String.valueOf(type),param.getUsername(),pernum);
             tokenMap.put("userId",type);
+            tokenMap.put("roleid",roleid);
             log.info(tokenMap.get("access_token").toString());
             log.info(tokenMap.get("userId").toString());
+            log.info(tokenMap.get("roleid").toString());
             return ServerResponseEntity.success(tokenMap, param.getUsername() + " login success.");
         }
     }

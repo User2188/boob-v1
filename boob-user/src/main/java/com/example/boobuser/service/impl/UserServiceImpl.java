@@ -71,4 +71,11 @@ public class UserServiceImpl implements UserService {
         }
         return pernum;
     }
+
+    @Override
+    public int roleid(UserLoginDTO param){
+        var user=userMapper.findByName(param.getUsername());
+        var roleid=user.getRoleid();
+        return roleid;
+    }
 }
